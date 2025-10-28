@@ -6,7 +6,7 @@ All you need to do is include both the .cpp file in your project's makefile.
 And then write following code:
 
 ```
-#include "unit_test_lib/unit_test_lib.h"
+#include "UnitTestLib/UnitTestLib.h"
 
 TEST(TestCategory, TestName)
 {
@@ -19,3 +19,5 @@ int main()
 	return RunTests();
 }
 ```
+
+The `RunTests` function accepts argument of tpye `RunTestContext` which allows you to for example override logging function. Check its documentation in code to see all capabilities.
