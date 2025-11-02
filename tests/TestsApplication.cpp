@@ -11,25 +11,25 @@ TEST(ECppLib, TestUnitTestLib)
 
 TEST(ECppLibSkiped, SkippedTest) {}
 
-void TestCustomUnitTestLogFunction(LoggingFunctionSeverity severity, const char* message, va_list args, void* userData);
+void TestCustomUnitTestLogFunction(const LoggingFunctionSeverity severity, const char* const message, const va_list args, void* const userData);
 
 int main()
 {
-	RunTestsContext runTestContext;
+	const char* onlyEppLibCategoryFilters[] = { "ecpplib", nullptr };
+	const RunTestsContext runTestContext = {
+		// We have option to override logging function here and log to file for example.
+		.loggingFunction = &TestCustomUnitTestLogFunction,
 
-	// We have option to override logging function here and log to file for example.
-	runTestContext.loggingFunction = &TestCustomUnitTestLogFunction;
-
-	// Only launch ECppLib tests.
-	const char* categoryFilters[] = {"ecpplib", nullptr};
-	runTestContext.categoryFilters = categoryFilters;
+		// Only launch ECppLib tests.
+		.categoryFilters = onlyEppLibCategoryFilters,
+	};
 
 	return RunTests(runTestContext);
 }
 
-void TestCustomUnitTestLogFunction(LoggingFunctionSeverity severity, const char* message, va_list args, void* userData)
+void TestCustomUnitTestLogFunction(const LoggingFunctionSeverity severity, const char* const message, const va_list args, void* const userData)
 {
-	FILE *targetFile = (severity == LoggingFunctionSeverity::Error) ? stderr : stdout;
+	FILE *const targetFile = (severity == LoggingFunctionSeverity::Error) ? stderr : stdout;
 
 	fprintf(targetFile, "[custom] ");
 

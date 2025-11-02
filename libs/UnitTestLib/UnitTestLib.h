@@ -8,7 +8,7 @@
 enum class LoggingFunctionSeverity { Info, Warning, Error, };
 
 /**  Signature of the logging function. The passed parameters are promised to be valid by the library. */
-using LoggingFunction = void(*)(LoggingFunctionSeverity severity, const char *message, va_list args, void* userData);
+using LoggingFunction = void(*)(const LoggingFunctionSeverity severity, const char *const message, const va_list args, void* const userData);
 
 /**
  * Structure defining context of tests execution.
@@ -55,7 +55,7 @@ int RunTests(const RunTestsContext& context = {});
  */
 #define TEST(CategoryName, Name) \
 	void TEST_CONCAT_MACRO(TEST_CONCAT_MACRO(CategoryName, Name), EntryPoint)(); \
-	TestCase TEST_CONCAT_MACRO(TEST_CONCAT_MACRO(CategoryName, Name), Case)( \
+	const TestCase TEST_CONCAT_MACRO(TEST_CONCAT_MACRO(CategoryName, Name), Case)( \
 		#CategoryName, #Name, &TEST_CONCAT_MACRO(TEST_CONCAT_MACRO(CategoryName, Name), EntryPoint) \
 	); \
 	void TEST_CONCAT_MACRO(TEST_CONCAT_MACRO(CategoryName, Name), EntryPoint)()
@@ -107,13 +107,13 @@ struct TestCase
 	/** Link to next registered test case. @c c nullptr if this is last test case. */
 	TestCase *nextTestCase = nullptr;
 	/** The entry point executing test logic. */
-	TestEntryPoint entryPoint = nullptr;
+	const TestEntryPoint entryPoint = nullptr;
 	/** Pointer to compile-time allocated ANSI string representing category of the test. */
-	const char *category = nullptr;
+	const char *const category = nullptr;
 	/** Pointer to compile-time allocated ANSI string representing name of the test. */
-	const char *name = nullptr;
+	const char *const name = nullptr;
 
-	TestCase(const char *categoryName, const char *caseName, TestEntryPoint theEntryPoint);
+	TestCase(const char *const categoryName, const char *const caseName, const TestEntryPoint theEntryPoint);
 };
 
 bool Test_ExpectEq(const bool result, const char *firstValue, const char *secondValue,

@@ -15,7 +15,7 @@ struct UnitTestLibState
 /** A global state of unit test framework. */
 static UnitTestLibState g_unitTestLibState;
 
-static void DefaultUnitTestLogFunction(LoggingFunctionSeverity severity, const char* message, va_list args, void* userData)
+static void DefaultUnitTestLogFunction(const LoggingFunctionSeverity severity, const char* const message, const va_list args, void* const userData)
 {
 	FILE *targetFile = (severity == LoggingFunctionSeverity::Error) ? stderr : stdout;
 
@@ -35,7 +35,7 @@ static void DefaultUnitTestLogFunction(LoggingFunctionSeverity severity, const c
 	fprintf(targetFile, "\n");
 }
 
-static void UnitTestLog(LoggingFunctionSeverity severity, const char* message, ...)
+static void UnitTestLog(const LoggingFunctionSeverity severity, const char* const message, ...)
 {
 	va_list argumentsList;
 	va_start(argumentsList, message);
@@ -50,7 +50,7 @@ static bool ShouldSkipTestCategory(const char* category)
 		return false;
 	}
 
-	const char** categoryFilters = g_unitTestLibState.runContext.categoryFilters;
+	const char*const * categoryFilters = g_unitTestLibState.runContext.categoryFilters;
 	for (const char* categoryFilter = *categoryFilters; categoryFilter != nullptr; ++categoryFilters, categoryFilter = *categoryFilters)
 	{
 		if (stricmp(categoryFilter, category) == 0)
@@ -62,7 +62,7 @@ static bool ShouldSkipTestCategory(const char* category)
 	return true;
 }
 
-TestCase::TestCase(const char *categoryName, const char *caseName, TestEntryPoint theEntryPoint)
+TestCase::TestCase(const char *const categoryName, const char *const caseName, const TestEntryPoint theEntryPoint)
 	: entryPoint(theEntryPoint)
 	, category(categoryName)
 	, name(caseName)
@@ -84,7 +84,7 @@ int RunTests(const RunTestsContext &runTestsContext)
 	g_unitTestLibState.currentTestFailed = false;
 
 	bool allTestsSucceeded = true;
-	for (TestCase *testCase = g_unitTestLibState.firstTestCase; testCase; testCase = testCase->nextTestCase)
+	for (const TestCase *testCase = g_unitTestLibState.firstTestCase; testCase; testCase = testCase->nextTestCase)
 	{
 		if (ShouldSkipTestCategory(testCase->category))
 		{
