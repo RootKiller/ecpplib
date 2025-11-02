@@ -8,6 +8,7 @@ project "ECppLibTests"
 	}
 	files {"../libs/**.cpp", "../libs/**.h"}
 	files {"../.editorconfig"}
+	files {"./premake5.lua"}
 
 	vpaths { ["*"] = "../**" }
 
@@ -15,6 +16,7 @@ project "ECppLibTests"
 
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++20"
 
 	targetdir "bin"
 	targetsuffix "_%{cfg.buildcfg}"
